@@ -1,5 +1,4 @@
 _G.love = require('love')
--- local GameState = require('gameState')
 
 PIE = 3.14
 --- Converts angle to radians
@@ -104,6 +103,10 @@ function love.load()
         direction = 0
     }
 
+    _G.ScoreCard = {
+        score = 0
+    }
+
     _G.pacmanEye = {
         x = 225,
         y = 175,
@@ -130,6 +133,16 @@ function GetNewLocationAfterRotation(radius, nwAn)
 end
 
 function love.update(dt)
+    if love.keyboard.isDown("a") then
+        pacman.direction = 2
+    elseif love.keyboard.isDown("w") then
+        pacman.direction = 1
+    elseif love.keyboard.isDown("s") then
+        pacman.direction = 3
+    elseif love.keyboard.isDown("d") then
+        pacman.direction = 0
+    end
+
     local pacmanStatePositionChange = UpdatePacmanPosition(pacman.x, pacman.y, pacman.direction);
     local pacmanStateChange = UpdatePacmanMouth(pacman.angle1, pacman.angle2);
     local changedAngle = pacmanStateChange.angle1 - pacman.angle1;
@@ -149,17 +162,14 @@ function love.update(dt)
 
     local isColli = CheckIsCollding(food.x, food.y, food.width, food.height, pacman.x, pacman.y, pacman.radius)
     if food.IsEaten == true and isColli == false then
+        _G.ScoreCard.score = _G.ScoreCard.score + 1
         food.x = math.random(100, 600)
         food.y = math.random(100, 500)
     end
     food.IsEaten = isColli
-    -- local change = GetNewLocationAfterRotation(pacman.radius, pacmanStateChange.angle1)
-    -- pacmanEye.x = pacmanEye.x + change.xchange;
-    -- pacmanEye.y = pacmanEye.y + change.ychange;
 end
 
 function love.draw()
-    -- love.graphics.print(string.format("Pacman x %d y %d", pacman.x, pacman.y))
 
     love.graphics.setColor(0.8, 0.4, 0.6)
     love.graphics.arc("fill", pacman.x, pacman.y, pacman.radius, pacman.angle1, pacman.angle2, 50)
@@ -170,4 +180,10 @@ function love.draw()
     if not food.IsEaten then
         love.graphics.rectangle("fill", food.x, food.y, food.width, food.height);
     end
+
+    love.graphics.rectangle("line", 600, 0, 200, 100)
+    love.graphics.setColor(0, 0, 0)
+    local text = love.graphics.newText(love.graphics.newFont("fonts/PerfectPixel.ttf"),
+        string.format("Score %d", _G.ScoreCard.score))
+    love.graphics.draw(text, 620, 15, 0, 2, 2, 0, 0, 0, 0)
 end
