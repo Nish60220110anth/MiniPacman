@@ -18,6 +18,17 @@ Lua based love2d game library is used to build this game. Love2d is game library
 3. Food item can be picked by colliding/overlapping with it.
 4. All food items appearing on the screen contains same score 1.
 5. Pacman can't leave the bounds of the game screen.
+6. You win the game when you get high score (by default , it is 5)
+
+## Limitations
+
+1. Due to frame by frame drawing, calculating collison is difficult for complex shapes. So i opt for rectangle for food item.
+2. Frame is not resizable due to static drawing positions in game screen.
 
 ## ScreenShots : 
-![Beaten](./srs/Screenshot%202023-05-13%20114710.png)
+
+### Game
+![Beaten](srs/OnGame.png)
+
+### Win!
+![Win](srs/YouWin.png)
