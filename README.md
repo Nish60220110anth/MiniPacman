@@ -1,8 +1,23 @@
 # MiniPacman
-MiniPacman implemented in lua ( many functionalities not added)
 
-ScreenShots : 
-![Beaten](https://user-images.githubusercontent.com/104020981/200141644-495a38f8-dc77-4ae0-8057-92ecc2fe2ec0.png)
+MiniPacman is a simple 2d game inspired from the pacman game.
 
-To Run (it is best supported for window) 
-> Download love2d (preferably latest release) , then download this repo and open from command line . Run `love .`
+## Goal
+
+Goal of this game is to get high score by picking up the food (shown / drawn as green rectangle in [screenshot](#screenshots))
+
+## TechStack
+
+Lua based love2d game library is used to build this game. Love2d is game library which is based on frame by frame updating. 
+
+## Functionalities
+(**Note** Some functionalities can't be seen in the picture becoz those are based on animation and some may be trivial but for frame by frame updating, those are little involved)
+
+1. Pacman object can be moved in all four directions (up,down, right, left) using keys `W`,`S`,`D`,`A`.
+2. Pacman mouth has open/close animation
+3. Food item can be picked by colliding/overlapping with it.
+4. All food items appearing on the screen contains same score 1.
+5. Pacman can't leave the bounds of the game screen.
+
+## ScreenShots : 
+![Beaten](./srs/Screenshot%202023-05-13%20114710.png)

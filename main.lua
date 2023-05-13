@@ -22,8 +22,6 @@ function UpdatePacmanMouth(angle1, angle2)
     angle1 = RadiansToAngle(angle1)
     angle2 = RadiansToAngle(angle2)
 
-    -- print(string.format("Angle1 %f Angle2 %f", angle1, angle2))
-
     if not (pacman.IsOpen) then
         angle1 = angle1 - 1
         angle2 = angle2 + 1
@@ -51,7 +49,6 @@ end
 _G.Speed = 2
 
 function UpdatePacmanPosition(x, y, direction)
-    -- print(string.format("x %d y %d direction %d", x, y, direction))
     if direction == 0 then
         x = x + Speed
         if x == 800 then
@@ -91,7 +88,7 @@ function CheckIsCollding(xs, ys, widths, heights, xo, yo, ro)
 end
 
 function love.load()
-    love.graphics.setBackgroundColor(0.3, 0.3, 0.8)
+    love.graphics.setBackgroundColor(love.math.colorFromBytes(100,100,240))
 
     _G.pacman = {
         x = 200,
@@ -104,7 +101,8 @@ function love.load()
     }
 
     _G.ScoreCard = {
-        score = 0
+        score = 0,
+        maxScore = 5
     }
 
     _G.pacmanEye = {
@@ -123,6 +121,9 @@ function love.load()
         height = 100,
         IsEaten = false
     }
+    
+    _G.wonGame = false
+
 end
 
 function GetNewLocationAfterRotation(radius, nwAn)
@@ -171,19 +172,55 @@ end
 
 function love.draw()
 
-    love.graphics.setColor(0.8, 0.4, 0.6)
-    love.graphics.arc("fill", pacman.x, pacman.y, pacman.radius, pacman.angle1, pacman.angle2, 50)
+if not _G.wonGame then 
+        love.graphics.setLineWidth(3)
+    love.graphics.setLineStyle("smooth")
+    love.graphics.setColor(love.math.colorFromBytes(200,200,100))
+    love.graphics.arc("fill",pacman.x, pacman.y, pacman.radius, pacman.angle1, pacman.angle2, 50)
 
-    love.graphics.setColor(1, 1, 1);
+    love.graphics.setLineWidth(2)
+    love.graphics.setColor(0,0,0)
+    love.graphics.arc("line", pacman.x, pacman.y, pacman.radius, pacman.angle1, pacman.angle2, 50)
+
+    love.graphics.setColor(1,0,0);
     love.graphics.circle("line", pacmanEye.x, pacmanEye.y, pacmanEye.radius);
+
+    love.graphics.setColor(0, 0.4, 0)
 
     if not food.IsEaten then
         love.graphics.rectangle("fill", food.x, food.y, food.width, food.height);
     end
+    
+    love.graphics.setLineWidth(5)
+    love.graphics.setLineStyle("rough")
 
-    love.graphics.rectangle("line", 600, 0, 200, 100)
+    love.graphics.setColor(love.math.colorFromBytes(100,100,150))
+    love.graphics.rectangle("line", 600, 0, 200, 100) 
+
+    love.graphics.setColor(love.math.colorFromBytes(50,150,200))
+    love.graphics.rectangle("fill", 600, 0, 200, 100) 
+
     love.graphics.setColor(0, 0, 0)
-    local text = love.graphics.newText(love.graphics.newFont("fonts/PerfectPixel.ttf"),
+    local text1 = love.graphics.newText(love.graphics.newFont("fonts/PerfectPixel.ttf"),
         string.format("Score %d", _G.ScoreCard.score))
-    love.graphics.draw(text, 620, 15, 0, 2, 2, 0, 0, 0, 0)
+    
+    love.graphics.setColor(love.math.colorFromBytes(100,0,100))
+    local text2 = love.graphics.newText(love.graphics.newFont("fonts/PerfectPixel.ttf"),"MiniPacman")
+
+    love.graphics.setLineStyle("rough")
+    love.graphics.draw(text2,350,25,0,2,2,0,0,0,0)
+    
+    love.graphics.setColor(0,0,0)
+    love.graphics.draw(text1, 640, 25, 0, 2, 2, 0, 0, 0, 0)
+
+    
+    if _G.ScoreCard.score == _G.ScoreCard.maxScore then _G.wonGame= true end
+else 
+    love.graphics.setBackgroundColor(love.math.colorFromBytes(0,0,0))
+
+    love.graphics.setColor(love.math.colorFromBytes(255,255,255))
+    local text = love.graphics.newText(love.graphics.newFont("fonts/PerfectPixel.ttf"),"You won")
+    love.graphics.draw(text, 350, 250, 0, 2, 2, 0, 0, 0, 0)
+end
+
 end
