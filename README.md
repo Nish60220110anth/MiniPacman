@@ -4,7 +4,7 @@ MiniPacman is a simple 2d game inspired from the pacman game.
 
 ## Goal
 
-Goal of this game is to get high score by picking up the food (shown / drawn as green rectangle in [screenshot](#screenshots))
+Goal of this game is to get high score by picking up the food (shown / drawn as green rectangle in [screenshot](#game))
 
 ## TechStack
 
